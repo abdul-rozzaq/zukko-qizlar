@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="container mx-auto">
+    <h1 class="text-3xl text-blue-900">{{ request.user.is_authenticated }}</h1>
+</div>
+
+{% endblock content %}

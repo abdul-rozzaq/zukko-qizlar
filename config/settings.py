@@ -112,5 +112,5 @@ MEDIA_ROOT = BASE_DIR / "media/"
 
 AUTH_USER_MODEL = "authentication.User"
 TAILWIND_APP_NAME = "clear"
-
+TAILWIND_CSS_PATH = "css/styles.css"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

@@ -3,40 +3,64 @@
 
 {% block content %}
 
+<div class="sm:w-full md:w-9/12 lg:w-1/2 xl:w-2/5 px-6 mx-auto">
 
-<form class="w-full md:w-9/12 lg:w-1/2 xl:w-2/5  px-6 mx-auto " method="POST"> {% csrf_token %}
-    <div class="mb-7 text-3xl font-semibold">Ro'yhatdan o'tish</div>
+    <form class="mb-6" method="POST"> {% csrf_token %}
+        <div class="mb-7 text-3xl font-semibold">Ro'yhatdan o'tish</div>
 
-    <div class="mb-6">
-        <label for="full_name" class="block mb-2 text-sm font-medium text-gray-900 ">To'liq ism <span class="text-red-500">*</span> </label>
-        <input type="text" id="full_name" class="bg-gray-50 border border-gray-300  text-gray-900 text-sm rounded-lg  block w-full p-2.5   placeholder-gray-400  focus:ring-blue-500 focus:border-blue-500" placeholder="Muslimaxon Abdusalomova" required />
-    </div>
-    <div class="mb-6">
-        <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 ">Phone number <span class="text-red-500">*</span> </label>
-        <input type="tel" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5   placeholder-gray-400  focus:ring-blue-500 focus:border-blue-500" required placeholder="+998333932580" />
-    </div>
-    <div class="mb-6">
-        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Email address</label>
-        <input type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5   placeholder-gray-400  focus:ring-blue-500 focus:border-blue-500" placeholder="john.doe@company.com" required />
-    </div>
-    <div class="mb-6 flex gap-6">
-        <div class="flex-grow">
-            <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">Parol <span class="text-red-500">*</span> </label>
-            <input type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5   placeholder-gray-400  focus:ring-blue-500 focus:border-blue-500" placeholder="•••••••••" required />
+        <div class="mb-6 flex gap-6">
+            <div class="flex-grow">
+                <label for="full_name" class="block mb-2 text-sm font-medium text-gray-900 ">Ism <span class="text-red-500">*</span> </label>
+                <input name="first_name" type="text" id="full_name" class="bg-gray-50 border border-gray-300  text-gray-900 text-sm rounded-lg  block w-full p-2.5   placeholder-gray-400  focus:ring-blue-500 focus:border-blue-500" placeholder="Muslimaxon" required />
+            </div>
+            <div class="flex-grow">
+                <label for="full_name" class="block mb-2 text-sm font-medium text-gray-900 ">Familiya <span class="text-red-500">*</span> </label>
+                <input name="last_name" type="text" id="full_name" class="bg-gray-50 border border-gray-300  text-gray-900 text-sm rounded-lg  block w-full p-2.5   placeholder-gray-400  focus:ring-blue-500 focus:border-blue-500" placeholder="Abdusalomova" required />
+            </div>
         </div>
-        <div class="flex-grow">
-            <label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900 ">Parolni tasdiqlash <span class="text-red-500">*</span> </label>
-            <input type="password" id="confirm_password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5   placeholder-gray-400  focus:ring-blue-500 focus:border-blue-500" placeholder="•••••••••" required />
+        <div class="mb-6">
+            <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 ">Phone number <span class="text-red-500">*</span> </label>
+            <input name="phone_number" type="tel" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5   placeholder-gray-400  focus:ring-blue-500 focus:border-blue-500" required placeholder="+998333932580" />
         </div>
-    </div>
-    <div class="flex items-start mb-6">
-        <div class="flex items-center h-5">
-            <input id="remember" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 ring-offset-gray-800" required />
+        <div class="mb-6 flex gap-6">
+            <div class="flex-grow">
+                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">Parol <span class="text-red-500">*</span> </label>
+                <input name="password1" type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5   placeholder-gray-400  focus:ring-blue-500 focus:border-blue-500" placeholder="•••••••••" required />
+            </div>
+            <div class="flex-grow">
+                <label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900 ">Parolni tasdiqlash <span class="text-red-500">*</span> </label>
+                <input name="password2" type="password" id="confirm_password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5   placeholder-gray-400  focus:ring-blue-500 focus:border-blue-500" placeholder="•••••••••" required />
+            </div>
         </div>
-        <label for="remember" class="ms-2 text-sm font-medium text-gray-900">Men <a href="#" class="text-blue-600 hover:underline">foydalanish shartlariga</a> roziman.</label>
-    </div>
-    <button type="submit" class="text-gray-50 focus:ring-4 focus:outline-none font-medium rounded-lg w-full md:w-min px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Yuborish</button>
-</form>
+        <div class="flex items-start mb-6">
+            <div class="flex items-center h-5">
+                <input id="remember" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 ring-offset-gray-800" required />
+            </div>
+            <label for="remember" class="ms-2 text-sm font-medium text-gray-900">Men <a href="#" class="text-blue-600 hover:underline">foydalanish shartlariga</a> roziman.</label>
+        </div>
+        <button type="submit" class="text-gray-50 focus:ring-4 focus:outline-none font-medium rounded-lg w-full md:w-min px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Yuborish</button>
+    </form>
 
+
+    {% for message in messages %}
+    <div id="alert-1" class="flex items-center p-4 mb-4 text-yellow-800 rounded-lg bg-yellow-50 border border-yellow-300" role="alert">
+        <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+        </svg>
+        <span class="sr-only">Info</span>
+        <div class="ms-3 text-sm font-medium">
+            {{ message }}
+        </div>
+        <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-yellow-50 text-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 p-1.5 hover:bg-yellow-100 inline-flex items-center justify-center h-8 w-8 " data-dismiss-target="#alert-1" aria-label="Close">
+            <span class="sr-only">Close</span>
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+            </svg>
+        </button>
+    </div>
+    {% endfor %}
+
+
+</div>
 
 {% endblock %}

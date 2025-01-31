@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="sm:w-full md:w-9/12 lg:w-1/2 xl:w-2/5 mx-auto p-6 bg-white">
+    <h2 class="text-2xl font-semibold mb-4">Profil sozlamalari</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="flex items-center mb-4">
+            <img src="{{ user.avatar.url }}" alt="Avatar" class="rounded-full border mr-4 w-32 h-32">
+            <input type="file" name="avatar" class="text-sm text-gray-600">
+        </div>
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700">Ism</label>
+            <input type="text" name="first_name" value="{{ user.first_name }}" class="bg-gray-50 border border-gray-300  text-gray-900 text-sm rounded-lg  block w-full p-2.5   placeholder-gray-400  focus:ring-blue-500 focus:border-blue-500">
+        </div>
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700">Familiya</label>
+            <input type="text" name="last_name" value="{{ user.last_name }}" class="bg-gray-50 border border-gray-300  text-gray-900 text-sm rounded-lg  block w-full p-2.5   placeholder-gray-400  focus:ring-blue-500 focus:border-blue-500">
+        </div>
+        <button type="submit" class="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700">
+            Saqlash
+        </button>
+    </form>
+
+</div>
+
+{% endblock content %}

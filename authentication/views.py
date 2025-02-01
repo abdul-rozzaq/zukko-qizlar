@@ -43,16 +43,20 @@ class RegistrationView(generic.TemplateView):
 
         if form.is_valid():
             user = form.save()
-            messages.success(request, "Ro'yxatdan o'tish muvaffaqiyatli yakunlandi! Tizimga kiring.")
 
-            return redirect("login")
+            login(request=request, user=user)
 
+            return redirect("registration-complete")
         else:
             for field, errors in form.errors.items():
                 for error in errors:
                     messages.error(request, f"{error}")
 
             return self.get(request)
+
+
+class RegistrationCompleteView(generic.TemplateView):
+    template_name = "authentication/registration-complete.html"
 
 
 class SettingsView(generic.TemplateView):

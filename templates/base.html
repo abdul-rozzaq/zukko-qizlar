@@ -16,64 +16,93 @@
 
 <body class="bg-gray-50 dark">
     <nav class="bg-gray-900 w-full border-b border-gray-600">
-        <div class="container flex items-center justify-between mx-auto py-4">
+        <div class="container flex items-center justify-between mx-auto py-4 px-3">
             <!-- Logo -->
             <a href="/" class="flex items-center w-1/4">
                 <span class="text-2xl font-semibold whitespace-nowrap text-white">ZukkoQizlar</span>
             </a>
 
-            <!-- Menu -->
-            <div class="md:flex justify-center w-3/6">
+            <!-- Katta ekranlar uchun menyu -->
+            <div class="hidden md:flex justify-center w-3/6">
                 <ul class="flex flex-col md:flex-row md:space-x-8 font-medium text-white">
                     <li><a href="#" class="py-2 px-3 rounded-sm hover:text-blue-700">Taqrizlar</a></li>
                     <li><a href="#" class="py-2 px-3 rounded-sm hover:text-blue-700">Iqtiboslar</a></li>
                     <li><a href="#" class="py-2 px-3 rounded-sm hover:text-blue-700">Mualliflar</a></li>
                     <li><a href="#" class="py-2 px-3 rounded-sm hover:text-blue-700">Kitoblar</a></li>
+                    <li><a href="#" class="py-2 px-3 rounded-sm hover:text-blue-700">Kitoblar</a></li>
                 </ul>
             </div>
 
-            <!-- User Buttons -->
+            <!-- Foydalanuvchi tugmalari (login, register yoki avatar) -->
             <div class="flex items-center justify-end w-1/4 gap-3">
+
+                <!-- Hamburger tugma (faqat kichik ekranlar uchun) -->
+                <div class="md:hidden">
+                    <button data-collapse-toggle="mobile-menu" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+
                 {% if request.user.is_authenticated %}
                 <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown">
                     <span class="sr-only">Open user menu</span>
                     <img class="w-9 h-9 rounded-full" src="{{ request.user.avatar.url }}" alt="user photo">
                 </button>
-
+                <!-- Foydalanuvchi menyusi -->
                 <div class="z-50 hidden my-4 text-base list-none divide-y rounded-lg shadow-sm bg-gray-700 divide-gray-600" id="user-dropdown">
                     <div class="px-4 py-3 w-60">
-                        <span class="block text-sm  text-white">{{ request.user.get_full_name }}</span>
-                        <span class="block text-sm  truncate text-gray-400">{{ request.user.phone_number }}</span>
+                        <span class="block text-sm text-white">{{ request.user.get_full_name }}</span>
+                        <span class="block text-sm truncate text-gray-400">{{ request.user.phone_number }}</span>
                     </div>
                     <ul class="py-2" aria-labelledby="user-menu-button">
                         <li>
-                            <a href="#" class="block px-4 py-2 text-sm  hover:bg-gray-600 text-gray-200 hover:text-white">Mening kitoblarim</a>
+                            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Mening kitoblarim</a>
                         </li>
                         <li>
-                            <a href="#" class="block px-4 py-2 text-sm  hover:bg-gray-600 text-gray-200 hover:text-white">Mening taqrizlarim</a>
+                            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Mening taqrizlarim</a>
                         </li>
                         <li>
-                            <a href="#" class="block px-4 py-2 text-sm  hover:bg-gray-600 text-gray-200 hover:text-white">Yordam</a>
+                            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Yordam</a>
                         </li>
                         <li>
-                            <a href="{% url 'settings' %}" class="block px-4 py-2 text-sm  hover:bg-gray-600 text-gray-200 hover:text-white">Sozlamalar</a>
+                            <a href="{% url 'settings' %}" class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Sozlamalar</a>
                         </li>
                         <li>
-                            <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm  hover:bg-gray-600 text-red-500 hover:text-white">Chiqish</a>
+                            <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm hover:bg-gray-600 text-red-500 hover:text-white">Chiqish</a>
                         </li>
                     </ul>
                 </div>
                 {% else %}
-                <a href="{% url 'login' %}" class="px-4 text-white font-medium">Kirish</a>
-                <a href="{% url 'register' %}" class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
+                <a href="{% url 'login' %}" class="hidden md:inline-block text-white px-4 font-medium ">Kirish</a>
+                <a href="{% url 'register' %}" class="hidden md:inline-block  text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
                     Ro'yhatdan o'tish
                 </a>
                 {% endif %}
             </div>
         </div>
+
+        <!-- Mobil menyu (burger menyu) -->
+        <div class="hidden md:hidden" id="mobile-menu">
+            <ul class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <li><a href="#" class="block py-2 px-3 rounded-md text-white hover:bg-gray-700">Taqrizlar</a></li>
+                <li><a href="#" class="block py-2 px-3 rounded-md text-white hover:bg-gray-700">Iqtiboslar</a></li>
+                <li><a href="#" class="block py-2 px-3 rounded-md text-white hover:bg-gray-700">Mualliflar</a></li>
+                <li><a href="#" class="block py-2 px-3 rounded-md text-white hover:bg-gray-700">Kitoblar</a></li>
+                {% if request.user.is_authenticated is False %}
+                <li><a href="{% url 'login' %}" class="block py-2 px-3 rounded-md text-white hover:bg-gray-700">Kirish</a></li>
+                <li><a href="{% url 'register' %}" class="block py-2 px-3 rounded-md text-white bg-blue-600">Ro'yhatdan o'tish</a></li>
+                {% endif %}
+            </ul>
+        </div>
     </nav>
 
-    <div class="mt-8">
+
+
+
+
+    <div class="mt-8 px-3">
         {% block content %}
         {% endblock content %}
     </div>

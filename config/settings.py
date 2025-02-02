@@ -15,7 +15,7 @@ SECRET_KEY = env.str("SECRET_KEY")
 DEBUG = env.bool("DEBUG", default=False)
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ["https://6dab-213-230-88-226.ngrok-free.app"]
+CSRF_TRUSTED_ORIGINS = ["https://d265-213-230-88-226.ngrok-free.app"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     # internal
     "authentication",
     "blog",
+    "api",
 ]
 
 MIDDLEWARE = [
@@ -77,9 +78,9 @@ AUTH_PASSWORD_VALIDATORS = [
     # {
     #     "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     # },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    # },
     # {
     #     "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     # },

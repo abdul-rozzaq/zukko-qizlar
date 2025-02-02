@@ -86,3 +86,7 @@ class MyReviewsView(generic.TemplateView):
 
 class MyQuotesView(generic.TemplateView):
     template_name = "authentication/my-quotes.html"
+
+
+class MyBooksView(generic.TemplateView):
+    template_name = "authentication/my-books.html"

@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "authentication",
     "blog",
     "api",
+    "bot",
 ]
 
 MIDDLEWARE = [
@@ -115,3 +116,6 @@ AUTH_USER_MODEL = "authentication.User"
 TAILWIND_APP_NAME = "clear"
 TAILWIND_CSS_PATH = "css/styles.css"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+BOT_TOKEN = env.str("BOT_TOKEN")

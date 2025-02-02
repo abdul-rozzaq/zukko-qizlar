@@ -13,12 +13,14 @@ class Author(models.Model):
 
 
 class Book(models.Model):
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name=_("Yozuvchi"))
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name=_("Yozuvchi"), null=True, blank=True)
     name = models.CharField(_("Nomi"), max_length=256)
     description = models.TextField(_("Haqida"))
     published_date = models.DateField(_("Chiqarilgan sana"))
     image = models.ImageField(_("Rasmi"), upload_to="books/", default="books/default.png")
     page_count = models.IntegerField(_("Sahifalar soni"), default=0)
+
+    is_published = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

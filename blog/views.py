@@ -8,3 +8,7 @@ class HomePageView(generic.TemplateView):
 
     def get_template_names(self):
         return [self.template_name if self.request.user.is_authenticated else self.template_name_unauthorized]
+
+
+class BooksPageView(generic.TemplateView):
+    template_name = "books.html"

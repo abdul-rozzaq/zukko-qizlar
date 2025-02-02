@@ -18,6 +18,7 @@ class Book(models.Model):
     description = models.TextField(_("Haqida"))
     published_date = models.DateField(_("Chiqarilgan sana"))
     image = models.ImageField(_("Rasmi"), upload_to="books/", default="books/default.png")
+    page_count = models.IntegerField(_("Sahifalar soni"), default=0)
 
     def __str__(self):
         return self.name

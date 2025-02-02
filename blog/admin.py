@@ -3,7 +3,7 @@ from django.contrib import admin
 from .models import Author, Book
 
 
-class BookInline(admin.TabularInline):
+class BookInline(admin.StackedInline):
     model = Book
     extra = 1
 

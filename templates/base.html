@@ -12,6 +12,12 @@
 
     {% tailwind_css %}
 
+    <style>
+        .debug * {
+            outline: 1px solid red;
+        }
+    </style>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
@@ -47,6 +53,14 @@
                 </div>
 
                 {% if request.user.is_authenticated %}
+                <!-- 
+                <div tabindex="-1" class="icon rounded-full size-9 flex justify-center items-center bg-gray-600 relative cursor-pointer hover:bg-gray-700 focus:ring-4 focus:ring-gray-600">
+                    <i class="fa-solid fa-bell text-white text-lg"></i>
+
+                    <div class="size-2 bg-red-600 rounded-full absolute top-0 right-0"></div>
+                </div> -->
+
+
                 <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown">
                     <img class="w-9 h-9 rounded-full border border-white" src="{{ request.user.avatar.url }}" alt="user photo">
                 </button>

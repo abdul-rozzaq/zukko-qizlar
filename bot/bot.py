@@ -1,4 +1,5 @@
 import json
+from difflib import SequenceMatcher
 from io import BytesIO
 
 from django.conf import settings
@@ -10,6 +11,11 @@ from blog.models import Author, Book
 
 # States for the conversation
 NAME, DESCRIPTION, PUBLISHED_DATE, PAGE_COUNT, IMAGE, AUTHOR_FIRST_NAME, AUTHOR_LAST_NAME = range(7)
+
+
+def similar(a, b):
+    """Levenshtein masofasi asosida o‘xshashlikni aniqlaydi"""
+    return SequenceMatcher(None, a, b).ratio()
 
 
 def start(update: Update, context: CallbackContext):
@@ -28,6 +34,15 @@ def handle_book_addition(update: Update, context: CallbackContext):
 
 def get_name(update: Update, context: CallbackContext):
     book_name = update.message.text.strip()
+
+    existing_books = Book.objects.all()
+
+    for book in existing_books:
+        existing_name = book.name.strip().lower()
+
+        if similar(book_name, existing_name) > 0.85 or book_name in existing_name:
+            update.message.reply_text(f"⚠️ Bunday kitob allaqachon bazada bor ({book.name})! " "Iltimos, boshqa kitob nomini kiriting.")
+            return NAME
 
     if Book.objects.filter(name__iexact=book_name).exists():
         update.message.reply_text("⚠️ Bunday kitob allaqachon bazada bor! Iltimos, boshqa kitob nomini kiriting.")

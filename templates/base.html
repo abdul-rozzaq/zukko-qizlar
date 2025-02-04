@@ -33,9 +33,9 @@
             <!-- Katta ekranlar uchun menyu -->
             <div class="hidden md:flex justify-center w-3/6">
                 <ul class="flex flex-col md:flex-row md:space-x-8 font-medium text-white">
-                    <li><a href="#" class="py-2 px-3 rounded-sm hover:text-blue-700">Taqrizlar</a></li>
-                    <li><a href="#" class="py-2 px-3 rounded-sm hover:text-blue-700">Iqtiboslar</a></li>
-                    <li><a href="#" class="py-2 px-3 rounded-sm hover:text-blue-700">Mualliflar</a></li>
+                    <li><a href="{% url 'reviews' %}" class="py-2 px-3 rounded-sm hover:text-blue-700">Taqrizlar</a></li>
+                    <li><a href="{% url 'quotes' %}" class="py-2 px-3 rounded-sm hover:text-blue-700">Iqtiboslar</a></li>
+                    <li><a href="{% url 'reviews' %}" class="py-2 px-3 rounded-sm hover:text-blue-700">Mualliflar</a></li>
                     <li><a href="{% url 'books' %}" class="py-2 px-3 rounded-sm hover:text-blue-700">Kitoblar</a></li>
                 </ul>
             </div>
@@ -103,10 +103,10 @@
         <!-- Mobil menyu (burger menyu) -->
         <div class="hidden md:hidden" id="mobile-menu">
             <ul class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <li><a href="#" class="block py-2 px-3 rounded-md text-white hover:bg-gray-700">Taqrizlar</a></li>
-                <li><a href="#" class="block py-2 px-3 rounded-md text-white hover:bg-gray-700">Iqtiboslar</a></li>
-                <li><a href="#" class="block py-2 px-3 rounded-md text-white hover:bg-gray-700">Mualliflar</a></li>
-                <li><a href="#" class="block py-2 px-3 rounded-md text-white hover:bg-gray-700">Kitoblar</a></li>
+                <li><a href="{% url 'reviews' %}" class="block py-2 px-3 rounded-md text-white hover:bg-gray-700">Taqrizlar</a></li>
+                <li><a href="{% url 'quotes' %}" class="block py-2 px-3 rounded-md text-white hover:bg-gray-700">Iqtiboslar</a></li>
+                <li><a href="{% url 'reviews' %}" class="block py-2 px-3 rounded-md text-white hover:bg-gray-700">Mualliflar</a></li>
+                <li><a href="{% url 'books' %}" class="block py-2 px-3 rounded-md text-white hover:bg-gray-700">Kitoblar</a></li>
                 {% if request.user.is_authenticated is False %}
                 <li><a href="{% url 'login' %}" class="block py-2 px-3 rounded-md text-white border-2 border-blue-600">Kirish</a></li>
                 <li><a href="{% url 'register' %}" class="block py-2 px-3 rounded-md text-white bg-blue-600 border-2 border-blue-600 hover:bg-blue-700">Ro'yhatdan o'tish</a></li>

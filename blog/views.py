@@ -12,3 +12,11 @@ class HomePageView(generic.TemplateView):
 
 class BooksPageView(generic.TemplateView):
     template_name = "books.html"
+
+
+class QuotesPageView(generic.TemplateView):
+    template_name = "quotes.html"
+
+
+class ReviewsPageView(generic.TemplateView):
+    template_name = "reviews.html"

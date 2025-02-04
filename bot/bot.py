@@ -92,6 +92,7 @@ def get_author_last_name(update: Update, context: CallbackContext):
 
 
 def get_image(update: Update, context: CallbackContext):
+    loading_message = update.message.reply_text('⏳ Rasm yuklanmoqda')
 
     file = update.message.photo[-1].get_file()
     file_content = file.download_as_bytearray()
@@ -112,6 +113,8 @@ def get_image(update: Update, context: CallbackContext):
     )
 
     book.save()
+
+    loading_message.delete()
 
     update.message.reply_text(f"Kitob '{book.name}' muvaffaqiyatli qo'shildi!")
 

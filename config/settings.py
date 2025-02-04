@@ -15,7 +15,7 @@ SECRET_KEY = env.str("SECRET_KEY")
 DEBUG = env.bool("DEBUG", default=False)
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ["https://d265-213-230-88-226.ngrok-free.app"]
+CSRF_TRUSTED_ORIGINS = ["https://3ed5-94-141-76-130.ngrok-free.app"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",

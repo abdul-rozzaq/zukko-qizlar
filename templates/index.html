@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
 
 <div class="mx-auto w-full md:w-3/4 lg:w-full xl:w-3/4 p-1 flex flex-col lg:flex-row gap-2">
     <!-- Chap ustun: Hozir o'qilayotgan va So'ngi izohlar -->
     <div class="w-full lg:w-1/4 p-2 order-2 lg:order-1">
         <div class="section mb-4">
-            <div class="text-xl font-semibold mb-2">Hozir o'qilayotgan</div>
+            <div class="text-sm font-semibold mb-2 text-white bg-gray-700 px-2 py-1">Hozir o'qilayotgan</div>
             <div class="flex flex-col gap-1">
                 <!-- Har bir kitob komponenti -->
                 <div class="book-component min-h-36 flex gap-2">
@@ -40,42 +40,16 @@
                 <!-- Shu kabi boshqa kitob komponentlari ... -->
             </div>
         </div>
+
         <div class="section mb-4">
-            <div class="text-xl font-semibold mb-2">So'ngi izohlar</div>
-            <div class="flex flex-col gap-4">
-                <div class="comment border-b pb-2   border p-3 rounded-lg shadow-sm">
-                    <div class="profile flex items-center gap-1 text-sm font-semibold mb-2">
-                        <img class="w-8 h-8 rounded-full bg-slate-400" src="{{ request.user.avatar.url }}" alt="Avatar">
-                        <div class="writer-info">{{ request.user.get_full_name }}</div>
-                        <div class="ms-auto text-xs text-gray-500">25 Yan. 12:58</div>
-                    </div>
-                    <div class="comment-text text-sm">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem reprehenderit porro eius inventore nemo obcaecati.
-                    </div>
-                </div>
-                <div class="comment border-b pb-2   border p-3 rounded-lg shadow-sm">
-                    <div class="profile flex items-center gap-1 text-sm font-semibold mb-2">
-                        <img class="w-8 h-8 rounded-full bg-slate-400" src="{{ request.user.avatar.url }}" alt="Avatar">
-                        <div class="writer-info">{{ request.user.get_full_name }}</div>
-                        <div class="ms-auto text-xs text-gray-500">25 Yan. 12:58</div>
-                    </div>
-                    <div class="comment-text text-sm">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem reprehenderit porro eius inventore nemo obcaecati.
-                    </div>
-                </div>
-                <div class="comment border-b pb-2   border p-3 rounded-lg shadow-sm">
-                    <div class="profile flex items-center gap-1 text-sm font-semibold mb-2">
-                        <img class="w-8 h-8 rounded-full bg-slate-400" src="{{ request.user.avatar.url }}" alt="Avatar">
-                        <div class="writer-info">{{ request.user.get_full_name }}</div>
-                        <div class="ms-auto text-xs text-gray-500">25 Yan. 12:58</div>
-                    </div>
-                    <div class="comment-text text-sm">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem reprehenderit porro eius inventore nemo obcaecati.
-                    </div>
-                </div>
-                <!-- Qo'shimcha izohlar -->
+            <div class="text-sm font-semibold mb-2 text-white bg-gray-700 px-2 py-1">Tafsiya etilgan kitoblari</div>
+            <div class="grid grid-cols-3 flex-col gap-1">
+                {% for book in recomended_books %}
+                    <img src="{{ book.image.url }}" class="h-32 object-cover w-full">
+                {% endfor %}
             </div>
         </div>
+
     </div>
 
     <!-- O'rta ustun: Asosiy kontent -->
@@ -87,89 +61,44 @@
             <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 text-nowrap">Yangi post ✍️</a>
         </div>
 
+        {% for review in following_reviews %}
 
-        <div class="border p-3 rounded-lg shadow-sm mt-4">
-            <div class="flex justify-between items-center">
+
+        <div class="border p-3 rounded-lg shadow-sm mt-4 bg-white">
+            <div class="flex justify-between items-center mb-2">
                 <div>
-                    <div class="text-sm font-bold">Spilled Milk</div>
-                    <div class="text-xs text-gray-600">by K. L. Randis</div>
+                    <div class="text-sm font-bold">{{ review.book.name }}</div>
+                    <div class="text-xs text-gray-600">by {{ review.book.author.full_name }}</div>
                 </div>
-                <div class="text-xs text-gray-500">25 Yan, 12:58</div>
             </div>
-            <div class="text-sm mt-2">
-                Bu kitob juda ta’sirli hikoyaga ega. Men uni o‘qib hayratlandim!
+            <div class="text-sm mb-2">
+                {{ review.body|truncatewords:60 }}
                 <a href="#" class="text-blue-600">Ko‘proq</a>
             </div>
-            <div class="mt-2 flex gap-2 text-xs">
-                <a href="#" class="text-yellow-600">✏️ Tahrirlash</a>
-                <a href="#" class="text-red-600">🗑 O‘chirish</a>
+            <div class="profile flex items-center gap-2 text-sm font-semibold">
+                <img class="size-10 rounded-full bg-slate-400" src="{{ review.writer.avatar.url }}" alt="Avatar">
+                <div class="ml-3">
+                    <div class="writer-info">by {{ review.writer.get_full_name }}</div>
+                    <div class="ms-auto text-xs text-gray-500">{{ review.created_at }}</div>
+                </div>
             </div>
         </div>
 
+        {% endfor %}
 
-        <div class="border p-3 rounded-lg shadow-sm mt-4">
-            <div class="flex justify-between items-center">
-                <div>
-                    <div class="text-sm font-bold">Spilled Milk</div>
-                    <div class="text-xs text-gray-600">by K. L. Randis</div>
-                </div>
-                <div class="text-xs text-gray-500">25 Yan, 12:58</div>
-            </div>
-            <div class="text-sm mt-2">
-                Bu kitob juda ta’sirli hikoyaga ega. Men uni o‘qib hayratlandim!
-                <a href="#" class="text-blue-600">Ko‘proq</a>
-            </div>
-            <div class="mt-2 flex gap-2 text-xs">
-                <a href="#" class="text-yellow-600">✏️ Tahrirlash</a>
-                <a href="#" class="text-red-600">🗑 O‘chirish</a>
-            </div>
-        </div>
-
-
-        <div class="border p-3 rounded-lg shadow-sm mt-4">
-            <div class="flex justify-between items-center">
-                <div>
-                    <div class="text-sm font-bold">Spilled Milk</div>
-                    <div class="text-xs text-gray-600">by K. L. Randis</div>
-                </div>
-                <div class="text-xs text-gray-500">25 Yan, 12:58</div>
-            </div>
-            <div class="text-sm mt-2">
-                Bu kitob juda ta’sirli hikoyaga ega. Men uni o‘qib hayratlandim!
-                <a href="#" class="text-blue-600">Ko‘proq</a>
-            </div>
-            <div class="mt-2 flex gap-2 text-xs">
-                <a href="#" class="text-yellow-600">✏️ Tahrirlash</a>
-                <a href="#" class="text-red-600">🗑 O‘chirish</a>
-            </div>
-        </div>
-        <div class="border p-3 rounded-lg shadow-sm mt-4">
-            <div class="flex justify-between items-center">
-                <div>
-                    <div class="text-sm font-bold">Spilled Milk</div>
-                    <div class="text-xs text-gray-600">by K. L. Randis</div>
-                </div>
-                <div class="text-xs text-gray-500">25 Yan, 12:58</div>
-            </div>
-            <div class="text-sm mt-2">
-                Bu kitob juda ta’sirli hikoyaga ega. Men uni o‘qib hayratlandim!
-                <a href="#" class="text-blue-600">Ko‘proq</a>
-            </div>
-            <div class="mt-2 flex gap-2 text-xs">
-                <a href="#" class="text-yellow-600">✏️ Tahrirlash</a>
-                <a href="#" class="text-red-600">🗑 O‘chirish</a>
-            </div>
-        </div>
 
 
     </div>
 
     <!-- O'ng ustun: So'ngi taqrizlar -->
     <div class="w-full lg:w-1/4 p-2 order-3 lg:order-3">
-        <div class="section mb-6">
-            <div class="text-xl font-semibold mb-2">So'ngi taqrizlar</div>
+        <div class="section mb-4">
+            <div class="text-sm font-semibold mb-2  text-white bg-gray-700 px-2 py-1">So'ngi taqrizlar</div>
             <div class="reviews flex flex-col gap-4">
-                <div class="review border-b pb-2   ">
+
+                {% for review in last_reviews %}
+
+                <div class="review border-b pb-2 bg-white p-3 border rounded-lg shadow-sm">
                     <div class="review-header flex items-center justify-between">
                         <div class="left">
                             <div class="book-title font-bold">Spilled milk</div>
@@ -177,26 +106,24 @@
                         </div>
                         <div class="rate flex items-center gap-1 text-yellow-300 text-xs">
                             <!-- Yulduz ikonkalari: SVG kodlar -->
-                            <svg class="w-4 h-4 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
-                            </svg>
-                            <svg class="w-4 h-4 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
-                            </svg>
-                            <svg class="w-4 h-4 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
-                            </svg>
-                            <svg class="w-4 h-4 text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
-                            </svg>
-                            <svg class="w-4 h-4 text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
-                            </svg>
-                            <!-- Qo'shimcha yulduzlar shu tarzda qo'shiladi -->
+
+
+                            {% for i in "12345"|make_list %}
+                                {% if forloop.counter <= review.rate %}
+                                    <svg class="w-4 h-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
+                                    </svg>
+                                {% else %}
+                                    <svg class="w-4 h-4 text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
+                                    </svg>
+                                {% endif %}
+                            {% endfor %}
+
                         </div>
                     </div>
                     <div class="review mb-2 text-sm">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nulla voluptatibus numquam, ex possimus velit architecto maxime illum quas maiores... <a href="#" class="text-blue-600">Ko'proq</a>
+                        {{ review.body|truncatewords:40 }}
                     </div>
                     <div class="profile flex items-center gap-2 text-sm font-semibold">
                         <img class="size-10 rounded-full bg-slate-400" src="{{ request.user.avatar.url }}" alt="Avatar">
@@ -207,81 +134,46 @@
                     </div>
                 </div>
 
-                <div class="review border-b pb-2   ">
-                    <div class="review-header flex items-center justify-between">
-                        <div class="left">
-                            <div class="book-title font-bold">Spilled milk</div>
-                            <div class="book-author text-xs mb-2">by K. L. Randis</div>
-                        </div>
-                        <div class="rate flex items-center gap-1 text-yellow-300 text-xs">
-                            <!-- Yulduz ikonkalari: SVG kodlar -->
-                            <svg class="w-4 h-4 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
-                            </svg>
-                            <svg class="w-4 h-4 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
-                            </svg>
-                            <svg class="w-4 h-4 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
-                            </svg>
-                            <svg class="w-4 h-4 text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
-                            </svg>
-                            <svg class="w-4 h-4 text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
-                            </svg>
-                            <!-- Qo'shimcha yulduzlar shu tarzda qo'shiladi -->
-                        </div>
-                    </div>
-                    <div class="review mb-2 text-sm">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nulla voluptatibus numquam, ex possimus velit architecto maxime illum quas maiores... <a href="#" class="text-blue-600">Ko'proq</a>
-                    </div>
-                    <div class="profile flex items-center gap-2 text-sm font-semibold">
-                        <img class="size-10 rounded-full bg-slate-400" src="{{ request.user.avatar.url }}" alt="Avatar">
-                        <div class="ml-3">
-                            <div class="writer-info">by {{ request.user.get_full_name }}</div>
-                            <div class="ms-auto text-xs text-gray-500">4 daqiqa</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="review border-b pb-2   ">
-                    <div class="review-header flex items-center justify-between">
-                        <div class="left">
-                            <div class="book-title font-bold">Spilled milk</div>
-                            <div class="book-author text-xs mb-2">by K. L. Randis</div>
-                        </div>
-                        <div class="rate flex items-center gap-1 text-yellow-300 text-xs">
-                            <!-- Yulduz ikonkalari: SVG kodlar -->
-                            <svg class="w-4 h-4 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
-                            </svg>
-                            <svg class="w-4 h-4 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
-                            </svg>
-                            <svg class="w-4 h-4 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
-                            </svg>
-                            <svg class="w-4 h-4 text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
-                            </svg>
-                            <svg class="w-4 h-4 text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
-                            </svg>
-                            <!-- Qo'shimcha yulduzlar shu tarzda qo'shiladi -->
-                        </div>
-                    </div>
-                    <div class="review mb-2 text-sm">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nulla voluptatibus numquam, ex possimus velit architecto maxime illum quas maiores... <a href="#" class="text-blue-600">Ko'proq</a>
-                    </div>
-                    <div class="profile flex items-center gap-2 text-sm font-semibold">
-                        <img class="size-10 rounded-full bg-slate-400" src="{{ request.user.avatar.url }}" alt="Avatar">
-                        <div class="ml-3">
-                            <div class="writer-info">by {{ request.user.get_full_name }}</div>
-                            <div class="ms-auto text-xs text-gray-500">4 daqiqa</div>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
+
                 <!-- Qo'shimcha taqrizlar -->
+            </div>
+        </div>
+
+        <div class="section mb-4">
+            <div class="text-sm font-semibold mb-2 text-white bg-gray-700 px-2 py-1">So'ngi izohlar</div>
+            <div class="flex flex-col gap-4">
+                <div class="comment border-b pb-2   border p-3 rounded-lg shadow-sm bg-white">
+                    <div class="profile flex items-center gap-1 text-sm font-semibold mb-2">
+                        <img class="w-8 h-8 rounded-full bg-slate-400" src="{{ request.user.avatar.url }}" alt="Avatar">
+                        <div class="writer-info">{{ request.user.get_full_name }}</div>
+                        <div class="ms-auto text-xs text-gray-500">25 Yan. 12:58</div>
+                    </div>
+                    <div class="comment-text text-sm">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem reprehenderit porro eius inventore nemo obcaecati.
+                    </div>
+                </div>
+                <div class="comment border-b pb-2   border p-3 rounded-lg shadow-sm bg-white">
+                    <div class="profile flex items-center gap-1 text-sm font-semibold mb-2">
+                        <img class="w-8 h-8 rounded-full bg-slate-400" src="{{ request.user.avatar.url }}" alt="Avatar">
+                        <div class="writer-info">{{ request.user.get_full_name }}</div>
+                        <div class="ms-auto text-xs text-gray-500">25 Yan. 12:58</div>
+                    </div>
+                    <div class="comment-text text-sm">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem reprehenderit porro eius inventore nemo obcaecati.
+                    </div>
+                </div>
+                <div class="comment border-b pb-2   border p-3 rounded-lg shadow-sm bg-white">
+                    <div class="profile flex items-center gap-1 text-sm font-semibold mb-2">
+                        <img class="w-8 h-8 rounded-full bg-slate-400" src="{{ request.user.avatar.url }}" alt="Avatar">
+                        <div class="writer-info">{{ request.user.get_full_name }}</div>
+                        <div class="ms-auto text-xs text-gray-500">25 Yan. 12:58</div>
+                    </div>
+                    <div class="comment-text text-sm">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem reprehenderit porro eius inventore nemo obcaecati.
+                    </div>
+                </div>
+                <!-- Qo'shimcha izohlar -->
             </div>
         </div>
     </div>

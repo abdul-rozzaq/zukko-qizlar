@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<div class="sm:w-full md:w-5/6 lg:w-1/2 xl:w-3/5 mx-auto px-4 flex gap-10">
+    <div class="left w-1/4 flex justify-center flex-col items-center">
+        <div class="image-wrapper w-52 h-80 mb-5 rounded-e-2xl shadow-2xl shadow-slate-400 overflow-hidden">
+            <img src="{{ object.image.url }}" class="size-full object-cover" alt="">
+        </div>
+
+        <button class="bg-white w-full py-2 mb-2 rounded-full border-2 border-slate-700 hover:bg-slate-700 hover:text-white transition-all"> <i class="fa-solid fa-plus text-lg"></i> Saqlanganlarga qo'shish</button>
+        <button class="bg-white w-full py-2 mb-2 rounded-full border-2 border-green-700 hover:bg-green-700 hover:text-white transition-all"> <i class="fa-solid fa-cart-shopping"></i> Ildizdan sotib olish</button>
+    </div>
+    <div class="right grow font-serif ">
+        <div class="text-4xl font-bold mb-1">{{ object.name }}</div>
+        <div class="text-xl mb-3">{{ object.author.full_name }}</div>
+        <div class="rate flex items-center gap-6 mb-3 text-ls">
+            <div class="rates flex gap-2">
+                {% for i in "12345"|slice:5 %}
+                    {% if forloop.counter <= object.rate %}
+                        <i class="fa-sharp fa-solid fa-star text-amber-500 text-2xl"></i>
+                    {% else %}
+                        <i class="fa-sharp fa-solid fa-star text-slate-200 text-2xl"></i>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="text font-bold text-2xl">
+                {{ object.rate }}
+            </div>
+        </div>
+
+        <div class="about-book font-mono font-semibold">
+            {{ object.description }}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

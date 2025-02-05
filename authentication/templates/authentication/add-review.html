@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="sm:w-full md:w-9/12 lg:w-1/2 xl:w-2/5 mx-auto px-4">
+
+    <form class="mb-6" method="POST"> {% csrf_token %}
+        <div class="mb-7 text-3xl font-semibold">Yangi taqriz qo'shish</div>
+
+        <div class="mb-6">
+            <label for="books" class="block mb-2 text-sm font-medium text-gray-900">Kitobni tanlang <span class="text-red-500">*</span></label>
+            <select id="books" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " name="book">
+                <option selected>Tanlanmagan</option>
+
+                {% for book in books %}
+                <option value="{{ book.id }}">{{ book.name }}</option>
+                {% endfor %}
+
+            </select>
+        </div>
+
+        <div class="mb-6">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Reytingingiz:</label>
+            <div class="flex space-x-1">
+                {% for i in "12345"|slice:5 %}
+                <button type="button" class="rating-star text-gray-400 text-2xl focus:outline-none" data-value="{{ forloop.counter }}">
+                    <svg class="size-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
+                    </svg>
+                </button>
+                {% endfor %}
+            </div>
+            <input type="hidden" name="rate" id="rating-value" value="0">
+        </div>
+        <div class="mb-6">
+            <label for="message" class="block mb-2 text-sm font-medium text-gray-900">Taqriz matni <span class="text-red-500">*</span></label>
+            <textarea id="message" name="body" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Fikrlaringizni yerga yozing..."></textarea>
+        </div>
+        <button type="submit" class="text-gray-50 focus:ring-4 focus:outline-none font-medium rounded-lg w-full md:w-min px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Yuborish</button>
+    </form>
+
+
+    {% for message in messages %}
+    <div id="alert-1" class="flex items-center p-4 mb-4 text-yellow-800 rounded-lg bg-yellow-50 border border-yellow-300" role="alert">
+        <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+        </svg>
+        <span class="sr-only">Info</span>
+        <div class="ms-3 text-sm font-medium">
+            {{ message }}
+        </div>
+        <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-yellow-50 text-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 p-1.5 hover:bg-yellow-100 inline-flex items-center justify-center h-8 w-8 " data-dismiss-target="#alert-1" aria-label="Close">
+            <span class="sr-only">Close</span>
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+            </svg>
+        </button>
+    </div>
+    {% endfor %}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const stars = document.querySelectorAll(".rating-star");
+            const ratingInput = document.getElementById("rating-value");
+
+            stars.forEach((star, index) => {
+                star.addEventListener("click", function () {
+                    ratingInput.value = star.getAttribute("data-value");
+
+                    stars.forEach((s, i) => {
+                        s.classList.toggle("text-yellow-500", i <= index);
+                        s.classList.toggle("text-gray-400", i > index);
+                    });
+                });
+            });
+        });
+    </script>
+
+</div>
+
+{% endblock %}

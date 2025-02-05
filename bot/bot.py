@@ -1,4 +1,4 @@
-import json
+from datetime import datetime
 from difflib import SequenceMatcher
 from io import BytesIO
 
@@ -60,9 +60,18 @@ def get_description(update: Update, context: CallbackContext):
 
 
 def get_published_date(update: Update, context: CallbackContext):
-    context.user_data["published_date"] = update.message.text
-    update.message.reply_text("Kitobning sahifa sonini kiriting:")
-    return PAGE_COUNT
+    text = update.message.text.strip()
+
+    try:
+        published_date = datetime.strptime(text, "%Y-%m-%d").date()
+        context.user_data["published_date"] = published_date
+
+        update.message.reply_text("✅ Sana qabul qilindi!\n\nKitobning sahifa sonini kiriting:")
+        return PAGE_COUNT
+
+    except ValueError:
+        update.message.reply_text("❌ Noto‘g‘ri sana formati! Iltimos, sanani YYYY-MM-DD shaklida kiriting.")
+        return PUBLISHED_DATE  # Foydalanuvchi yana kiritishi kerak bo‘ladi
 
 
 def get_page_count(update: Update, context: CallbackContext):
@@ -92,7 +101,7 @@ def get_author_last_name(update: Update, context: CallbackContext):
 
 
 def get_image(update: Update, context: CallbackContext):
-    loading_message = update.message.reply_text('⏳ Rasm yuklanmoqda')
+    loading_message = update.message.reply_text("⏳ Rasm yuklanmoqda")
 
     file = update.message.photo[-1].get_file()
     file_content = file.download_as_bytearray()

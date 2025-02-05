@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 
+from blog.models import Quote, Review
+
 from .models import User
 
 
@@ -53,3 +55,17 @@ class LoginForm(forms.Form):
             return user
 
         return None
+
+
+class QuoteForm(forms.ModelForm):
+
+    class Meta:
+        model = Quote
+        fields = ["book", "body"]
+
+
+class ReviewForm(forms.ModelForm):
+
+    class Meta:
+        model = Review
+        fields = ["book", "body", "rate"]

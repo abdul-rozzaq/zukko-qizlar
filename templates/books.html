@@ -9,7 +9,7 @@
     <div class="flex justify-between md:items-center flex-col md:flex-row mb-4">
         <h2 class="text-2xl font-bold mb-2">📚 Mening Kitoblarim</h2>
         <form class="w-full md:w-1/2  flex gap-2">
-            <input type="text" class="rounded-lg w-full bg-transparent" placeholder="Qidiruv">
+            <input type="text" class="rounded-lg w-full bg-transparent" placeholder="Qidiruv" name="query" value="{{ request.GET.query }}" autofocus>
             <button class="bg-blue-600 py-2 px-4 rounded-md text-white">Yuborish</button>
         </form>
     </div>
@@ -17,12 +17,14 @@
     <!-- Kitoblar Ro‘yxati -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 ">
 
+        {% for book in object_list %}
+
         <div class="book-component flex border bg-white">
-            <img class="image w-32 h-auto bg-slate-600 object-cover" src="{% static 'img/book-image.png' %}">
+            <img class="image w-32 h-auto bg-slate-600 object-cover" src="{{ book.image.url }}">
             <div class="grow p-2 flex flex-col">
-                <a href="#" class="book-title font-bold text-blue-600">Spilled milk</a>
-                <div class="book-author text-xs mb-2">by K. L. Randis</div>
-                <div class="book-author text-xs">244 sahifa * Chiqarilgan 2015</div>
+                <a href="{% url 'book-detail' book.pk %}" class="book-title font-bold text-blue-600">{{ book.name }}</a>
+                <div class="book-author text-xs mb-2">by {{ book.author.full_name }}</div>
+                <div class="book-author text-xs">{{ book.page_count }} sahifa • Chiqarilgan {{ book.published_date.year }} yil</div>
                 <div class="flex justify-start items-center my-1 text-yellow-500 text-xs mb-2">
                     <i class="fa-solid fa-star"></i>
                     <i class="fa-solid fa-star"></i>
@@ -34,108 +36,8 @@
                 <div class="mt-auto update-progress text-sm text-center w-full py-2 px-3 rounded cursor-pointer bg-green-600 text-white hover:text-white hover:bg-green-700">Kutubxonamga saqlash</div>
             </div>
         </div>
-        <div class="book-component flex border bg-white">
-            <img class="image w-32 h-auto bg-slate-600 object-cover" src="{% static 'img/book-image.png' %}">
-            <div class="grow p-2 flex flex-col">
-                <a href="#" class="book-title font-bold text-blue-600">Spilled milk</a>
-                <div class="book-author text-xs mb-2">by K. L. Randis</div>
-                <div class="book-author text-xs">244 sahifa * Chiqarilgan 2015</div>
-                <div class="flex justify-start items-center my-1 text-yellow-500 text-xs mb-2">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <span class="ml-1 text-gray-600">5.0</span>
-                </div>
-                <div class="mt-auto update-progress text-sm text-center w-full py-2 px-3 rounded cursor-pointer bg-green-600 text-white hover:text-white hover:bg-green-700">Kutubxonamga saqlash</div>
-            </div>
-        </div>
-        <div class="book-component flex border bg-white">
-            <img class="image w-32 h-auto bg-slate-600 object-cover" src="{% static 'img/book-image.png' %}">
-            <div class="grow p-2 flex flex-col">
-                <a href="#" class="book-title font-bold text-blue-600">Spilled milk</a>
-                <div class="book-author text-xs mb-2">by K. L. Randis</div>
-                <div class="book-author text-xs">244 sahifa * Chiqarilgan 2015</div>
-                <div class="flex justify-start items-center my-1 text-yellow-500 text-xs mb-2">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <span class="ml-1 text-gray-600">5.0</span>
-                </div>
-                <div class="mt-auto update-progress text-sm text-center w-full py-2 px-3 rounded cursor-pointer bg-green-600 text-white hover:text-white hover:bg-green-700">Kutubxonamga saqlash</div>
-            </div>
-        </div>
-        <div class="book-component flex border bg-white">
-            <img class="image w-32 h-auto bg-slate-600 object-cover" src="{% static 'img/book-image.png' %}">
-            <div class="grow p-2 flex flex-col">
-                <a href="#" class="book-title font-bold text-blue-600">Spilled milk</a>
-                <div class="book-author text-xs mb-2">by K. L. Randis</div>
-                <div class="book-author text-xs">244 sahifa * Chiqarilgan 2015</div>
-                <div class="flex justify-start items-center my-1 text-yellow-500 text-xs mb-2">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <span class="ml-1 text-gray-600">5.0</span>
-                </div>
-                <div class="mt-auto update-progress text-sm text-center w-full py-2 px-3 rounded cursor-pointer bg-green-600 text-white hover:text-white hover:bg-green-700">Kutubxonamga saqlash</div>
-            </div>
-        </div>
-        <div class="book-component flex border bg-white">
-            <img class="image w-32 h-auto bg-slate-600 object-cover" src="{% static 'img/book-image.png' %}">
-            <div class="grow p-2 flex flex-col">
-                <a href="#" class="book-title font-bold text-blue-600">Spilled milk</a>
-                <div class="book-author text-xs mb-2">by K. L. Randis</div>
-                <div class="book-author text-xs">244 sahifa * Chiqarilgan 2015</div>
-                <div class="flex justify-start items-center my-1 text-yellow-500 text-xs mb-2">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <span class="ml-1 text-gray-600">5.0</span>
-                </div>
-                <div class="mt-auto update-progress text-sm text-center w-full py-2 px-3 rounded cursor-pointer bg-green-600 text-white hover:text-white hover:bg-green-700">Kutubxonamga saqlash</div>
-            </div>
-        </div>
-        <div class="book-component flex border bg-white">
-            <img class="image w-32 h-auto bg-slate-600 object-cover" src="{% static 'img/book-image.png' %}">
-            <div class="grow p-2 flex flex-col">
-                <a href="#" class="book-title font-bold text-blue-600">Spilled milk</a>
-                <div class="book-author text-xs mb-2">by K. L. Randis</div>
-                <div class="book-author text-xs">244 sahifa * Chiqarilgan 2015</div>
-                <div class="flex justify-start items-center my-1 text-yellow-500 text-xs mb-2">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <span class="ml-1 text-gray-600">5.0</span>
-                </div>
-                <div class="mt-auto update-progress text-sm text-center w-full py-2 px-3 rounded cursor-pointer bg-green-600 text-white hover:text-white hover:bg-green-700">Kutubxonamga saqlash</div>
-            </div>
-        </div>
-        <div class="book-component flex border bg-white">
-            <img class="image w-32 h-auto bg-slate-600 object-cover" src="{% static 'img/book-image.png' %}">
-            <div class="grow p-2 flex flex-col">
-                <a href="#" class="book-title font-bold text-blue-600">Spilled milk</a>
-                <div class="book-author text-xs mb-2">by K. L. Randis</div>
-                <div class="book-author text-xs">244 sahifa * Chiqarilgan 2015</div>
-                <div class="flex justify-start items-center my-1 text-yellow-500 text-xs mb-2">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <span class="ml-1 text-gray-600">5.0</span>
-                </div>
-                <div class="mt-auto update-progress text-sm text-center w-full py-2 px-3 rounded cursor-pointer bg-green-600 text-white hover:text-white hover:bg-green-700">Kutubxonamga saqlash</div>
-            </div>
-        </div>
+
+        {% endfor %}
 
 
         <!-- Boshqa kitoblar shunga o‘xshash bo‘ladi -->

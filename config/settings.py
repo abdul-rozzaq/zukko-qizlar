@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "tailwind",
     "clear",
     "django_browser_reload",
+    "django_filters",
     # internal
     "authentication",
     "blog",

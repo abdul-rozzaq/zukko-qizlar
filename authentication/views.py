@@ -3,7 +3,9 @@ from django.contrib.auth import login, logout
 from django.shortcuts import redirect, render
 from django.views import generic
 
-from .forms import CustomUserChangeForm, CustomUserCreationForm, LoginForm
+from blog.models import Book, Quote, Review
+
+from .forms import CustomUserChangeForm, CustomUserCreationForm, LoginForm, QuoteForm, ReviewForm
 
 
 class LoginView(generic.TemplateView):
@@ -80,13 +82,81 @@ class SettingsView(generic.TemplateView):
         return self.get(request)
 
 
-class MyReviewsView(generic.TemplateView):
+class MyReviewsView(generic.ListView):
     template_name = "authentication/my-reviews.html"
+    queryset = Review.objects.all()
+
+    def get_queryset(self):
+        return self.queryset.filter(writer=self.request.user)
 
 
-class MyQuotesView(generic.TemplateView):
+class MyQuotesView(generic.ListView):
     template_name = "authentication/my-quotes.html"
+    queryset = Quote.objects.all()
+
+    def get_queryset(self):
+        return self.queryset.filter(writer=self.request.user).order_by("-pk")
 
 
 class MyBooksView(generic.TemplateView):
     template_name = "authentication/my-books.html"
+
+
+class AddQuotePageView(generic.TemplateView):
+    template_name = "authentication/add-quote.html"
+
+    def post(self, request, *args, **kwargs):
+
+        form = QuoteForm(request.POST)
+
+        if form.is_valid():
+            quote = form.save(commit=False)
+            quote.writer = request.user
+
+            quote.save()
+
+            return redirect("my-quotes")
+
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{error}")
+
+        return self.get(request)
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+
+        data["books"] = Book.objects.all()
+
+        return data
+
+
+class AddReviewPageView(generic.TemplateView):
+    template_name = "authentication/add-review.html"
+
+    def post(self, request, *args, **kwargs):
+        print(request.POST)
+        form = ReviewForm(request.POST)
+
+        if form.is_valid():
+            quote = form.save(commit=False)
+            quote.writer = request.user
+
+            quote.save()
+
+            return redirect("my-reviews")
+
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{error}")
+
+        return self.get(request)
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+
+        data["books"] = Book.objects.all()
+
+        return data

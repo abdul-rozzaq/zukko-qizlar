@@ -18,7 +18,7 @@ class HomePageView(generic.TemplateView):
 
         data["last_reviews"] = Review.objects.order_by("pk")[:2]
         data["following_reviews"] = Review.objects.all()
-        data["recomended_books"] = Book.objects.all()
+        data["recomended_books"] = Book.objects.all().order_by('?')[:6]
 
         return data
 
@@ -42,11 +42,11 @@ class BookDetailPageView(generic.DetailView):
     template_name = "book-detail.html"
 
 
-class QuotesPageView(generic.TemplateView):
+class QuotesPageView(generic.ListView):
     template_name = "quotes.html"
+    queryset = Quote.objects.all()
 
 
 class ReviewsPageView(generic.ListView):
     template_name = "reviews.html"
     queryset = Review.objects.all()
-

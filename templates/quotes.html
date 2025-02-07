@@ -12,21 +12,24 @@
     </div>
 
     <div class="">
-        <div class="p-4 border rounded-md bg-white shadow-sm">
+        {% for quote in object_list %}
+
+        <div class="p-4 border rounded-md bg-white shadow-sm mb-2">
             <div class="flex justify-between items-center flex-wrap">
                 <div>
-                    <p class="italic">"Kitoblar jimjitlik ichida so‘zlaydi."</p>
-                    <p class="text-sm text-gray-500 mt-1">— Umberto Eco</p>
+                    <p class="italic">"{{ quote.body }}"</p>
+                    <p class="text-sm text-gray-500 mt-1">— {{ quote.book.author.full_name }}</p>
                 </div>
 
-                <p class="text-sm text-gray-600 mt-1">"Il Giornale dei Libri" kitobidan</p>
+                <p class="text-sm text-gray-600 mt-1">"{{ quote.book.name }}" kitobidan</p>
             </div>
             <div class="flex justify-between items-center text-sm text-gray-600 mt-2">
-                <span class="text-gray-600 text-nowrap"><i class="fa-solid fa-heart"></i> 152</span>
-                <span class="text-xs text-gray-400">Qo‘shilgan sana: 2025-02-02</span>
+                <span class="text-gray-600 text-nowrap"><i class="fa-solid fa-heart"></i> 0</span>
+                <span class="text-xs text-gray-400">Qo‘shilgan sana: {{ quote.created_at }}</span>
             </div>
         </div>
 
+        {% endfor %}
     </div>
 </div>
 

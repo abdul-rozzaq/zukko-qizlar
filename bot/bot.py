@@ -4,12 +4,13 @@ from io import BytesIO
 
 from django.conf import settings
 from django.core.files import File
-from telegram import Bot, KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove, Update
-from telegram.ext import CallbackContext, CommandHandler, ConversationHandler, Dispatcher, Filters, MessageHandler
+from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove, Update
+from telegram.ext import CallbackContext, CallbackQueryHandler, CommandHandler, ConversationHandler, Dispatcher, Filters, MessageHandler
 
-from blog.models import Author, Book
+from blog.models import Author, Book, Quote, Review
 
-# States for the conversation
+from .models import MessageLike
+
 NAME, DESCRIPTION, PUBLISHED_DATE, PAGE_COUNT, IMAGE, AUTHOR_FIRST_NAME, AUTHOR_LAST_NAME = range(7)
 
 
@@ -135,6 +136,105 @@ def cancel(update: Update, context: CallbackContext):
     return ConversationHandler.END
 
 
+def send_quote(quote: Quote):
+    ADMIN_IDS = settings.ADMIN_IDS
+
+    message = (
+        f"<b>📜 Yangi iqtibos qo'shildi!</b>\n\n"
+        f"<b>✍️ Yozuvchi:</b> <i>{quote.writer.get_full_name()}</i>\n"
+        f"<b>📚 Kitob:</b> <i>{quote.book.name if quote.book else 'Kitob ko‘rsatilmagan'}</i>\n\n"
+        f"<b>📝 Iqtibos:</b>\n<blockquote>{quote.body}</blockquote>\n\n"
+        f"<b>🕰 Qo‘shilgan sana:</b> {quote.created_at.strftime('%Y-%m-%d %H:%M')}"
+    )
+
+    keyboard = [
+        [
+            InlineKeyboardButton("O'chirish ❌", callback_data=f"delete-quote-{quote.pk}"),
+            InlineKeyboardButton("Kanalga joylash ✅", callback_data=f"post-quote-{quote.pk}"),
+        ],
+    ]
+
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    for admin_id in ADMIN_IDS:
+        bot.send_message(admin_id, message, parse_mode="HTML", reply_markup=reply_markup)
+
+
+def send_review(review: Review):
+    ADMIN_IDS = settings.ADMIN_IDS
+
+    keyboard = [
+        [
+            InlineKeyboardButton("O'chirish ❌", callback_data=f"delete-review-{review.pk}"),
+            InlineKeyboardButton("Kanalga joylash ✅", callback_data=f"post-review-{review.pk}"),
+        ],
+    ]
+
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    message = (
+        f"━━━━━━━━━━━━━━━━━━\n"
+        f"📚 *Sharh Tafsilotlari* 📚\n"
+        f"━━━━━━━━━━━━━━━━━━\n"
+        f"👤 *Yozuvchi:* {review.writer.get_full_name()}\n"
+        f"📕 *Kitob:* {review.book.name}\n"
+        f"⭐️ *Bahosi:* {'⭐️' * review.rate}{'☆' * (5 - review.rate)}\n"
+        f"━━━━━━━━━━━━━━━━━━\n"
+        f"💡 _{review.body}_\n"
+        f"━━━━━━━━━━━━━━━━━━\n"
+        f"🗓 *Qo‘shilgan sana:* {review.created_at.strftime('%Y-%m-%d %H:%M')}\n"
+    )
+
+    for admin_id in ADMIN_IDS:
+        bot.send_message(admin_id, message, parse_mode="Markdown", reply_markup=reply_markup)
+
+
+def callback_handler(update: Update, context: CallbackContext) -> None:
+    query = update.callback_query
+    query.answer()
+
+    original_text = query.message.text
+
+    like_button = InlineKeyboardButton("🌸 0", callback_data=f"like-{query.message.message_id}")
+    keyboard = InlineKeyboardMarkup([[like_button]])
+
+    context.bot.send_message(chat_id="-1002448437362", text=original_text, reply_markup=keyboard)
+
+    MessageLike.objects.create(message_id=query.message.message_id, data={"count": 0, "users": []})
+
+
+def like_handler(update: Update, context: CallbackContext) -> None:
+    query = update.callback_query
+    user_id = query.from_user.id
+    _, message_id = query.data.split("-")
+    message_id = int(message_id)
+
+    try:
+        message_like = MessageLike.objects.get(message_id=message_id)
+
+        if user_id in message_like.data["users"]:
+            query.answer("Siz allaqachon like bosgansiz!", show_alert=True)
+
+        else:
+            message_like.data["count"] += 1
+            message_like.data["users"].append(user_id)
+            message_like.save()
+
+            new_like_count = message_like.data["count"]
+            like_button = InlineKeyboardButton(f"🌸 {new_like_count}", callback_data=f"like-{message_id}")
+            keyboard = InlineKeyboardMarkup([[like_button]])
+
+            query.edit_message_reply_markup(reply_markup=keyboard)
+            query.answer("Siz muvaffaqiyatli like bosdingiz!")
+
+    except MessageLike.DoesNotExist:
+        query.answer("Xatolik yuz berdi, iltimos qayta urinib ko'ring!", show_alert=True)
+
+
+def delete_handler(update: Update, context: CallbackContext):
+    update.effective_message.delete()
+
+
 conversation_handler = ConversationHandler(
     entry_points=[MessageHandler(Filters.regex(r"^Kitob qo'shish 📚$"), handle_book_addition)],
     states={
@@ -156,3 +256,6 @@ bot = Bot(token=settings.BOT_TOKEN)
 dispatcher = Dispatcher(bot, None)
 dispatcher.add_handler(CommandHandler("start", start))
 dispatcher.add_handler(conversation_handler)
+dispatcher.add_handler(CallbackQueryHandler(callback_handler, pattern="post-"))
+dispatcher.add_handler(CallbackQueryHandler(like_handler, pattern="like-"))
+dispatcher.add_handler(CallbackQueryHandler(delete_handler, pattern="delete-"))

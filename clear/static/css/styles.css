@@ -1127,6 +1127,11 @@ select {
   width: min-content;
 }
 
+.w-max {
+  width: -moz-max-content;
+  width: max-content;
+}
+
 .max-w-2xl {
   max-width: 42rem;
 }
@@ -1407,6 +1412,11 @@ select {
 .bg-green-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(22 163 74 / var(--tw-bg-opacity, 1));
+}
+
+.bg-orange-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(253 186 116 / var(--tw-bg-opacity, 1));
 }
 
 .bg-red-300 {
@@ -2000,6 +2010,10 @@ select {
   .md\:w-min {
     width: -moz-min-content;
     width: min-content;
+  }
+
+  .md\:w-1\/4 {
+    width: 25%;
   }
 
   .md\:grid-cols-2 {

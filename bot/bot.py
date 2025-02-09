@@ -198,7 +198,7 @@ def callback_handler(update: Update, context: CallbackContext) -> None:
     like_button = InlineKeyboardButton("🌸 0", callback_data=f"like-{query.message.message_id}")
     keyboard = InlineKeyboardMarkup([[like_button]])
 
-    context.bot.send_message(chat_id="-1002448437362", text=original_text, reply_markup=keyboard)
+    context.bot.send_message(chat_id=settings.QUOTES_CHANNEL, text=original_text, reply_markup=keyboard)
 
     update.effective_message.delete()
 

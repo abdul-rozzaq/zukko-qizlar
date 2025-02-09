@@ -200,6 +200,8 @@ def callback_handler(update: Update, context: CallbackContext) -> None:
 
     context.bot.send_message(chat_id="-1002448437362", text=original_text, reply_markup=keyboard)
 
+    update.effective_message.delete()
+
     MessageLike.objects.create(message_id=query.message.message_id, data={"count": 0, "users": []})
 
 
